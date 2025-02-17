@@ -30,18 +30,15 @@ class Game extends Model
         return $this->belongsTo(Player::class);
     }
 
-    public function play(){
-
-        if(!($this->player1 instanceof Player)){
-            throw new InvalidPlayerException('Player 1 is not a valid player');
-        }
-
-        if(!($this->player2 instanceof Player)){
-            throw new InvalidPlayerException('Player 2 is not a valid player');
-        }
+    public function play(Player $player1, Player $player2, Tournament $tournament) : Player {
 
         $score1 = $this->player1->getScore();
         $score2 = $this->player2->getScore();
+
+        $this->tournament_id = $tournament->id;
+        $this->round = $tournament->actualRound;
+        $this->player1()->associate($player1);
+        $this->player2()->associate($player2);
 
         $winner = ($score1 > $score2) ? $this->player1 : $this->player2;
         $this->winner_id = $winner;

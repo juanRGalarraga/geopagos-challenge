@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Player;
-use App\Models\Participation;
 use App\Models\Game;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -14,11 +13,6 @@ class Tournament extends Model
     public function games()
     {
         return $this->hasMany(Game::class);
-    }
-
-    public function participations()
-    {
-        return $this->hasMany(Participation::class);
     }
 
     public function players()
@@ -33,35 +27,23 @@ class Tournament extends Model
 
     public function create(string $type, array $players){
 
-        $playersCount = count($players);
-        $this->validatePlayersCount($playersCount);
+        $this->validatePlayersCount(count($players) );
         $this->validatePlayers($type, $players);
 
         Db::transaction(function () use ($type, $players) {
+
             $tournament = new Tournament();
+
             $tournament->type = $type;
+
+            $tournament->winner = $this->simulate($players, $tournament);
+
             $tournament->save();
-
-            $participants = new Collection($players);
-            $i = 0;
-            while($participants->count() > 1) { 
-
-                $winners = new Collection();
-
-                $game = new Game();
-                $game->tournament_id = $tournament->id;
-                $game->round = $i + 1;
-                $game->player1_id = $players[$i];
-                $game->player2_id = $players[$i + 1];
-                $winner = $game->play();
-                $game->save();
-
-                $winners->push($winner);
-            }
         });
     }
 
     private function validatePlayersCount(int $playersCount){
+        //If playersCount is a power of 2 the bitwise operation will return 0
         return ($playersCount & ($playersCount - 1)) === 0 && $playersCount > 0;
     }
 
@@ -76,5 +58,34 @@ class Tournament extends Model
                 throw new \InvalidArgumentException('Player with id ' . $playerId . ' is not of type ' . $type);
             }
         }
+    }
+
+    private function simulate(array $arrayOfPlayer, Tournament $tournament) : Player {
+
+        $players = new Collection($arrayOfPlayer);
+
+        $i = 0;
+
+        while($players->count() > 1) {
+            $winners = new Collection();
+            for($i = 0; $i < $players->count(); $i += 2){
+
+                $game = new Game();
+
+                $winner = $game->play(
+                    player1: $players[$i],
+                    player2: $players[$i + 1],
+                    tournament: $tournament
+                );
+
+                $game->save();
+
+                $winners->push($winner);
+
+            }
+            $participants = $winners;
+        }
+
+        return $participants->first();
     }
 }

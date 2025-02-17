@@ -15,10 +15,6 @@ class Player extends Model
         return $this->hasMany(Game::class);
     }
 
-    public function participations()
-    {
-        return $this->hasMany(Participation::class);
-    }
     
     public function getScore(){
         return match ($this->genre) {
