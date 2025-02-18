@@ -31,17 +31,17 @@ class Game extends Model
     }
 
     public function play(Player $player1, Player $player2, Tournament $tournament) : Player {
-
-        $score1 = $this->player1->getScore();
-        $score2 = $this->player2->getScore();
+        
+        $score1 = $player1->getScore();
+        $score2 = $player2->getScore();
 
         $this->tournament_id = $tournament->id;
         $this->round = $tournament->actualRound;
-        $this->player1()->associate($player1);
-        $this->player2()->associate($player2);
+        $this->player1_id = $player1->id;
+        $this->player2_id = $player2->id;
 
         $winner = ($score1 > $score2) ? $this->player1 : $this->player2;
-        $this->winner_id = $winner;
+        $this->winner_id = $winner->id;
 
         return $winner;
     }

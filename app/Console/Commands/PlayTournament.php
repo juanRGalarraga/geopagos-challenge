@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Player;
 use App\Enums\Genre;
+use App\Models\Game;
 use App\Models\Tournament;
 use Illuminate\Support\Facades\Log;
 
@@ -29,14 +30,30 @@ class PlayTournament extends Command
      */
     public function handle()
     {
-        $players = Player::factory()->count(8)->create([
-            'genre' => Genre::Male->value
+        $players = [
+            Player::find(17),
+            Player::find(18),
+            Player::find(19),
+            Player::find(20),
+            Player::find(21),
+            Player::find(22),
+            Player::find(23),
+            Player::find(24)
+        ];
+        
+        $tournament = new Tournament();
+        $maleTournament = $tournament::create([
+            'name' => 'Male Tournament',
+            'type' => Genre::Male->value,
+            'start_date' => now(),
         ]);
 
-        $tournament = new Tournament($players);
+        $winner = $maleTournament->simulate($players, Genre::Male->value);
 
-        $tournament->create(Genre::Male->value, $players->toArray());
+        $maleTournament->winner()->associate($winner);
 
-        $this->info('Tournament winner: ' . $tournament->winner->name);
+        $maleTournament->save();
+
+        $this->info("Game winner: $winner->name");
     }
 }

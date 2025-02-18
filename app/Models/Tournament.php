@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\DB;
 
 class Tournament extends Model
 {
+
+    protected $fillable = ['name', 'type', 'winner', 'start_date'];
+
+    public int $actualRound = 0;
+
     public function games()
     {
         return $this->hasMany(Game::class);
@@ -25,67 +30,45 @@ class Tournament extends Model
         return $this->belongsTo(Player::class);
     }
 
-    public function create(string $type, array $players){
-
-        $this->validatePlayersCount(count($players) );
-        $this->validatePlayers($type, $players);
-
-        Db::transaction(function () use ($type, $players) {
-
-            $tournament = new Tournament();
-
-            $tournament->type = $type;
-
-            $tournament->winner = $this->simulate($players, $tournament);
-
-            $tournament->save();
-        });
-    }
-
     private function validatePlayersCount(int $playersCount){
         //If playersCount is a power of 2 the bitwise operation will return 0
         return ($playersCount & ($playersCount - 1)) === 0 && $playersCount > 0;
     }
 
     private function validatePlayers(string $type, array $players){
-        foreach($players as $playerId){
-            $player = Player::find($playerId);
+        foreach($players as $player){
             if($player == null){
-                throw new \InvalidArgumentException('Player with id ' . $playerId . ' does not exist');
+                throw new \InvalidArgumentException("Player does not exist");
             }
-    
             if($player->genre !== $type){
-                throw new \InvalidArgumentException('Player with id ' . $playerId . ' is not of type ' . $type);
+                throw new \InvalidArgumentException("Player with id {$player->id} is not of type $type");
             }
         }
     }
 
-    private function simulate(array $arrayOfPlayer, Tournament $tournament) : Player {
-
+    public function simulate(array $arrayOfPlayer, string $type): Player
+    {
+        $this->validatePlayersCount(count($arrayOfPlayer) );
+        $this->validatePlayers($type, $arrayOfPlayer);
         $players = new Collection($arrayOfPlayer);
 
-        $i = 0;
-
-        while($players->count() > 1) {
+        //When the number of players are 1, this means that we have a winner
+        while ($players->count() > 1) {
             $winners = new Collection();
-            for($i = 0; $i < $players->count(); $i += 2){
-
+            for ($i = 0; $i < $players->count(); $i += 2) {
+                $this->actualRound++;
+                
                 $game = new Game();
-
                 $winner = $game->play(
                     player1: $players[$i],
                     player2: $players[$i + 1],
-                    tournament: $tournament
+                    tournament: $this
                 );
-
                 $game->save();
-
                 $winners->push($winner);
-
             }
-            $participants = $winners;
+            $players = $winners;
         }
-
-        return $participants->first();
+        return $players->first();
     }
 }
