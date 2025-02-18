@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Exceptions\InvalidPlayerException;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Tournament;
 use App\Models\Player;
@@ -10,6 +9,8 @@ use App\Models\Player;
 class Game extends Model
 {
     
+    protected $fillable = ['tournament_id', 'round', 'player1_id', 'player2_id', 'winner_id'];
+
     public function tournament()
     {
         return $this->belongsTo(Tournament::class);
@@ -30,19 +31,26 @@ class Game extends Model
         return $this->belongsTo(Player::class);
     }
 
-    public function play(Player $player1, Player $player2, Tournament $tournament) : Player {
-        
-        $score1 = $player1->getScore();
-        $score2 = $player2->getScore();
+    public static function play(Player $player1, Player $player2, Tournament $tournament) : Game {
 
-        $this->tournament_id = $tournament->id;
-        $this->round = $tournament->actualRound;
-        $this->player1_id = $player1->id;
-        $this->player2_id = $player2->id;
+        $score1 = 0;
+        $score2 = 0;
+        do {
+            $score1 = $player1->getScore();
+            $score2 = $player2->getScore();
+        } while ($score1 == $score2);
 
-        $winner = ($score1 > $score2) ? $this->player1 : $this->player2;
-        $this->winner_id = $winner->id;
+        $attributes = [
+            'tournament_id' => $tournament->id,
+            'round' => $tournament->actualRound,
+            'player1_id' => $player1->id,
+            'player2_id' => $player2->id
+        ];
 
-        return $winner;
+        $winner = ($score1 > $score2) ? $player1 : $player2;
+
+        $attributes['winner_id'] = $winner->id;
+
+        return Game::create($attributes);
     }
 }

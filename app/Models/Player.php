@@ -23,20 +23,22 @@ class Player extends Model
         };
     }
 
-    private function getScoreForMale() : float{
+    public function getScoreForMale() : float{
         //Lucky points works like a dice roll,
-        //it can be any number between 1 and 20
-        return $this->skill_level + $this->speed + $this->strong +
-        $this->getLuckyPoints();
+        //it can be any float between 1 and 20
+        $skillLevel = 0.5 * $this->skill_level * $this->getLuckyPoints();
+        $speed = 0.3 * $this->speed * $this->getLuckyPoints();
+        $strong = 0.2 * $this->strong * $this->getLuckyPoints();
+        print_r("Skill Level to {$this->name} : $skillLevel\n");
+        return $skillLevel + $speed + $strong;
     }
 
-    private function getScoreForFemale() : float{
-        return $this->skill_level + $this->reaction_time +
-        $this->getLuckyPoints();
+    public function getScoreForFemale() : float{
+        return (0.6 * $this->skill_level) + (0.4 * $this->reaction_time) * $this->getLuckyPoints();
     }
 
     private function getLuckyPoints() : float{
-        return rand(1, 20);
+        return mt_rand(1, 50) / 100;
     }
 
 }
