@@ -19,6 +19,7 @@ use App\Http\Controllers\PlayerController;
  * )
  */
 
+Route::get('/tournament', [TournamentController::class, 'index']);
 Route::put('/tournament', [TournamentController::class, 'store']);
 Route::post('/tournament/simulate', [TournamentController::class, 'simulate']);
 

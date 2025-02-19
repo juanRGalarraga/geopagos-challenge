@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Player;
 use App\Models\Tournament;
 use App\Models\Game;
+use App\Enums\Genre;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Requests\TournamentStoreRequest;
 use App\Http\Requests\TournamentSimulateRequest;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class TournamentController extends Controller
 {
-     #[OA\Post(
+     #[OA\Put(
         path: "/api/tournament",
         summary: "Create a new tournament",
         requestBody: new OA\RequestBody(
@@ -149,9 +152,7 @@ class TournamentController extends Controller
 
         $tournament = Tournament::find($tournamentId);
 
-        $tournament->update([
-            'start_date' => now(),
-        ]);
+        $tournament->start_date = now();
 
         $players = $players->map(function ($player) {
             return Player::find($player);
@@ -185,5 +186,37 @@ class TournamentController extends Controller
             'winner' => $players->first()->name,
             'tournament' => $tournament->name
         ], 200);
+    }
+
+    public function index(Request $request){
+        $query = Tournament::query();
+        
+        $date = $request->string('date');
+        if (\DateTime::createFromFormat('Y-m-d', $date) !== false) {
+            $query->where('start_date', '>=', $date->toString());
+        }
+
+        $type = $request->string('type');
+        if(Genre::tryFrom($type->toString())){
+            $query->where('type', '=', $type->toString());
+        }
+
+        $items = $query->with([
+            'winner' => function ($query) use ($type) {
+                $query->select('id', 'name', 'skill_level');
+                match ($type) {
+                    Genre::Male->value => $query->select('strong', 'speed'),
+                    Genre::Female->value => $query->select('reaction_time'),
+                    default => $query->select('*')
+                };
+            }])->get();
+
+        return response()->json([
+            'query' => $items->toQuery()->toRawSql(),
+            'count' => $items->count(),
+            'items' => $items
+        ],
+        200
+        );
     }
 }

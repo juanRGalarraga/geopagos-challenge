@@ -23,6 +23,9 @@ class PlayerSeeder extends Seeder
                 'speed' => fake()->randomFloat(1, 3, 20),
                 'reaction_time' => null,
             ]);
+        }
+        
+        for ($i=8; $i < 16; $i++) { 
             Player::factory()->create([
                 'genre' => Genre::Female->value,
                 'name' => fake()->name(),

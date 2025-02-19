@@ -118,12 +118,12 @@
             }
         },
         "/api/tournament": {
-            "post": {
+            "put": {
                 "tags": [
                     "Tournament"
                 ],
                 "summary": "Create a new tournament",
-                "operationId": "bfd1a1b682b4a1404a088eb7379891cf",
+                "operationId": "e1e175eb64287f99e09c16c3dd1c60d3",
                 "requestBody": {
                     "required": true,
                     "content": {
