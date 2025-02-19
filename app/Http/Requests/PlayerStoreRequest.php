@@ -14,7 +14,7 @@ class PlayerStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -54,15 +54,15 @@ class PlayerStoreRequest extends FormRequest
      */
     public function withValidator($validator)
     {
-        $validator->sometimes('strength', 'required|integer', function ($input) {
+        $validator->sometimes('strong', 'required|decimal:0,2', function ($input) {
             return $input->genre === Genre::Male->value;
         });
 
-        $validator->sometimes('speed', 'required|integer', function ($input) {
+        $validator->sometimes('speed', 'required|decimal:0,2', function ($input) {
             return $input->genre === Genre::Male->value;
         });
 
-        $validator->sometimes('reaction_time', 'required|integer', function ($input) {
+        $validator->sometimes('reaction_time', 'required|decimal:0,2', function ($input) {
             return $input->genre === Genre::Female->value;
         });
     }

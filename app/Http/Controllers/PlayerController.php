@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Genre;
+use App\Http\Requests\PlayerStoreRequest;
 use App\Models\Player;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use OpenApi\Attributes as OA;
 class PlayerController extends Controller
 {
     #[OA\Get(
-        path: "/player",
+        path: "/api/player",
         summary: "Gets a list of players, optionally filtered",
         parameters: [
             new OA\Parameter(
@@ -24,7 +25,7 @@ class PlayerController extends Controller
                 in: "query",
                 required: false,
                 schema: new OA\Schema(type: "string"),
-                example: "male"
+                example: "M"
             )
         ],
         tags: ["Players"]
@@ -55,8 +56,8 @@ class PlayerController extends Controller
         ]);
     }
 
-    #[OA\Post(
-        path: "/player",
+    #[OA\Put(
+        path: "/api/player",
         summary: "Creates a new player",
         requestBody: new OA\RequestBody(
             required: true,
@@ -75,7 +76,7 @@ class PlayerController extends Controller
                     new OA\Property(
                         property: "genre",
                         type: "string",
-                        example: "male"
+                        example: "M"
                     ),
                     new OA\Property(
                         property: "strong",
@@ -113,12 +114,12 @@ class PlayerController extends Controller
                 new OA\Property(
                     property: "player",
                     type: "object",
-                    example: '{"id": 1, "name": "John Doe", "skill_level": 25, "genre": "male", "strong": 13, "speed": 15.4, "reaction_time": 13.3}'
+                    example: '{"id": 1, "name": "John Doe", "skill_level": 25, "genre": "M", "strong": 13, "speed": 15.4}'
                 )
             ]
         )
     )]
-    public function store(Request $request): JsonResponse {
+    public function store(PlayerStoreRequest $request): JsonResponse {
         $player = Player::create($request->all());
         return response()->json([
             'message' => 'Player created successfully',

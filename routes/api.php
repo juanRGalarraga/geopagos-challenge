@@ -23,3 +23,4 @@ Route::put('/tournament', [TournamentController::class, 'store']);
 Route::post('/tournament/simulate', [TournamentController::class, 'simulate']);
 
 Route::get('player', [PlayerController::class, 'index']);
+Route::put('player', [PlayerController::class, 'store']);

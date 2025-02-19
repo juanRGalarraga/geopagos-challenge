@@ -6,13 +6,13 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/player": {
+        "/api/player": {
             "get": {
                 "tags": [
                     "Players"
                 ],
                 "summary": "Gets a list of players, optionally filtered",
-                "operationId": "13b4f70766909ae692b0845bfb2bcfaa",
+                "operationId": "276998b34fdbd8a67e957a7fb4fa25a9",
                 "parameters": [
                     {
                         "name": "genre",
@@ -21,7 +21,7 @@
                         "schema": {
                             "type": "string"
                         },
-                        "example": "male"
+                        "example": "M"
                     }
                 ],
                 "responses": {
@@ -46,12 +46,12 @@
                     }
                 }
             },
-            "post": {
+            "put": {
                 "tags": [
                     "Players"
                 ],
                 "summary": "Creates a new player",
-                "operationId": "3d9b9fb179b30ba45e638ce6601db4b9",
+                "operationId": "bb1beecb9195230558ecea6411c91ada",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -68,7 +68,7 @@
                                     },
                                     "genre": {
                                         "type": "string",
-                                        "example": "male"
+                                        "example": "M"
                                     },
                                     "strong": {
                                         "description": "Apply if the genre is M",
@@ -106,7 +106,7 @@
                                         },
                                         "player": {
                                             "type": "object",
-                                            "example": "{\"id\": 1, \"name\": \"John Doe\", \"skill_level\": 25, \"genre\": \"male\", \"strong\": 13, \"speed\": 15.4, \"reaction_time\": 13.3}"
+                                            "example": "{\"id\": 1, \"name\": \"John Doe\", \"skill_level\": 25, \"genre\": \"M\", \"strong\": 13, \"speed\": 15.4}"
                                         }
                                     },
                                     "type": "object"
@@ -117,13 +117,13 @@
                 }
             }
         },
-        "/tournament": {
+        "/api/tournament": {
             "post": {
                 "tags": [
                     "Tournament"
                 ],
                 "summary": "Create a new tournament",
-                "operationId": "b5b3407f39b0e03326c61510c5e959cf",
+                "operationId": "bfd1a1b682b4a1404a088eb7379891cf",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -184,13 +184,13 @@
                 }
             }
         },
-        "/tournament/simulate": {
+        "/api/tournament/simulate": {
             "post": {
                 "tags": [
                     "Tournament"
                 ],
                 "summary": "Simulate a tournament and return the winner",
-                "operationId": "0c93271f92afc25f72e90895a6ea599b",
+                "operationId": "3a7c2523e6da716cdbdd272f10547eb4",
                 "requestBody": {
                     "required": true,
                     "content": {

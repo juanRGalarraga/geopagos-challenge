@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
 class TournamentController extends Controller
 {
      #[OA\Post(
-        path: "/tournament",
+        path: "/api/tournament",
         summary: "Create a new tournament",
         requestBody: new OA\RequestBody(
             required: true,
@@ -84,7 +84,7 @@ class TournamentController extends Controller
     }
 
     #[OA\Post(
-        path: "/tournament/simulate",
+        path: "/api/tournament/simulate",
         summary: "Simulate a tournament and return the winner",
         requestBody: new OA\RequestBody(
             required: true,
