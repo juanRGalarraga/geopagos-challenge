@@ -188,6 +188,46 @@ class TournamentController extends Controller
         ], 200);
     }
 
+    #[OA\Get(
+        path: "/api/tournament",
+        summary: "Get a list of tournaments, optionally filtered by date and type",
+        parameters: [
+            new OA\Parameter(
+                name: "date",
+                in: "query",
+                required: false,
+                schema: new OA\Schema(type: "string", format: "Y-m-d"),
+                example: "2024-01-01"
+            ),
+            new OA\Parameter(
+                name: "type",
+                in: "query",
+                required: false,
+                schema: new OA\Schema(type: "string"),
+                example: "M"
+            )
+        ],
+        tags: ["Tournament"]
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Lista de torneos obtenida con éxito",
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: "count",
+                    type: "integer",
+                    example: 10
+                ),
+                new OA\Property(
+                    property: "items",
+                    type: "array",
+                    items: new OA\Items(type: "object"),
+                    example:'[{"id": 1, "name": "Tournament A", "start_date": "2024-01-01", "winner":"[player object if exists]", "type": "M"}]'
+                )
+            ]
+        )
+    )]
     public function index(Request $request){
         $query = Tournament::query();
         
@@ -212,7 +252,6 @@ class TournamentController extends Controller
             }])->get();
 
         return response()->json([
-            'query' => $items->toQuery()->toRawSql(),
             'count' => $items->count(),
             'items' => $items
         ],

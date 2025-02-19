@@ -118,6 +118,59 @@
             }
         },
         "/api/tournament": {
+            "get": {
+                "tags": [
+                    "Tournament"
+                ],
+                "summary": "Get a list of tournaments, optionally filtered by date and type",
+                "operationId": "fd7d76c50ddd21da426fea7e201c3a8f",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "Y-m-d"
+                        },
+                        "example": "2024-01-01"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "M"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de torneos obtenida con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            },
+                                            "example": "[{\"id\": 1, \"name\": \"Tournament A\", \"start_date\": \"2024-01-01\", \"winner\":\"[player object if exists]\", \"type\": \"M\"}]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "Tournament"
