@@ -1,0 +1,277 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Player API",
+        "description": "API to manage players",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/player": {
+            "get": {
+                "tags": [
+                    "Players"
+                ],
+                "summary": "Gets a list of players, optionally filtered",
+                "operationId": "13b4f70766909ae692b0845bfb2bcfaa",
+                "parameters": [
+                    {
+                        "name": "genre",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "male"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of players retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            },
+                                            "example": "[{\"id\": 1, \"name\": \"John Doe\", \"genre\": \"male\"}]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Players"
+                ],
+                "summary": "Creates a new player",
+                "operationId": "3d9b9fb179b30ba45e638ce6601db4b9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "skill_level": {
+                                        "type": "integer",
+                                        "example": 25
+                                    },
+                                    "genre": {
+                                        "type": "string",
+                                        "example": "male"
+                                    },
+                                    "strong": {
+                                        "description": "Apply if the genre is M",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 13
+                                    },
+                                    "speed": {
+                                        "description": "Apply if the genre is M",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 15.4
+                                    },
+                                    "reaction_time": {
+                                        "description": "Apply if the genre is F",
+                                        "type": "integer",
+                                        "example": 13.3
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Player created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Player created successfully"
+                                        },
+                                        "player": {
+                                            "type": "object",
+                                            "example": "{\"id\": 1, \"name\": \"John Doe\", \"skill_level\": 25, \"genre\": \"male\", \"strong\": 13, \"speed\": 15.4, \"reaction_time\": 13.3}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tournament": {
+            "post": {
+                "tags": [
+                    "Tournament"
+                ],
+                "summary": "Create a new tournament",
+                "operationId": "b5b3407f39b0e03326c61510c5e959cf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Summer Tournament"
+                                    },
+                                    "type": {
+                                        "description": "Choose a Male of Female tournament",
+                                        "type": "string",
+                                        "example": "M"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tournament created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tournament created successfully"
+                                        },
+                                        "tournament": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "The type is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tournament/simulate": {
+            "post": {
+                "tags": [
+                    "Tournament"
+                ],
+                "summary": "Simulate a tournament and return the winner",
+                "operationId": "0c93271f92afc25f72e90895a6ea599b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "tournament_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "players": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2,
+                                            3,
+                                            4
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tournament simulated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tournament simulated successfully"
+                                        },
+                                        "winner": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "tournament": {
+                                            "type": "string",
+                                            "example": "Spring Championship"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid tournament ID"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Players",
+            "description": "Players"
+        },
+        {
+            "name": "Tournament",
+            "description": "Tournament"
+        }
+    ]
+}

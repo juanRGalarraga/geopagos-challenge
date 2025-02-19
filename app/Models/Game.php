@@ -36,6 +36,7 @@ class Game extends Model
         $score1 = 0;
         $score2 = 0;
         do {
+            //Meanwhile the scores are equal, we will play again
             $score1 = $player1->getScore();
             $score2 = $player2->getScore();
         } while ($score1 == $score2);
