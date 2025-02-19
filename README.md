@@ -17,7 +17,7 @@ Go to your browser using the given url!
 
 ```
 
-## Documetation througth Swagger
+## Documented with Swagger
 
 When the server is runing, you can access to http://your-url/api/documentation to view and interact with de API.
 
