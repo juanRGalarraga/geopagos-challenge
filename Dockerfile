@@ -38,8 +38,9 @@ EXPOSE 80
 # Copy composer.lock and composer.json
 COPY ./composer.lock ./composer.json /var/www/html/
 
-RUN bash -c "composer install --no-dev --no-interaction --prefer-dist" \
-&& php artisan key:generate
+RUN bash -c "composer install --no-dev --no-interaction --prefer-dist"
+
+RUN php artisan key:generate
 
 # Run apache in foreground
 CMD ["apache2-foreground"]

@@ -16,9 +16,15 @@ cd ./geopagos-challenge
 
 docker-compose up -d --build
 
-composer install
+docker exec geopagos_app php artisan migrate:fresh --seed
+
+# Opcionalmente puedes ejecutar solo "composer install" si tienes instalado composer en tu máquina
 
 docker exec geopagos_app php artisan migrate:fresh --seed
+
+# En el caso de que figure el error "key was not generate", esto se debe a que por algún motivo Docker
+# no ejecutó el comando php artisan generate:key. En ese caso puedes ejecutarlo de la siguiente forma:
+docker exec geopagos_app php artisan key:generate
 
 
 ```
