@@ -19,6 +19,7 @@ services:
       - DB_HOST=db
       - DB_DATABASE=tennis_tournament
       - DB_USERNAME=root
+      - DB_PASSWORD=
     networks:
       - app-network
   db:
@@ -27,7 +28,8 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: tennis_tournament
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_PASSWORD: admin
+      ALLOW_EMPTY_PASSWORD: "yes"
       SERVICE_NAME: mysql
     ports:
       - "3306:3306"

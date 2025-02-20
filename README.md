@@ -16,9 +16,10 @@ cd ./geopagos-challenge
 
 docker-compose up -d --build
 
+composer install
+
 docker exec geopagos_app php artisan migrate:fresh --seed
 
-docker exec geopagos_app composer install
 
 ```
 
