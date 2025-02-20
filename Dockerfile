@@ -38,12 +38,10 @@ COPY . .
 
 RUN cp .env.example .env
 
-RUN composer install --no-dev --no-interaction --prefer-dist
-
 RUN php artisan key:generate
 
 # Exponer el puerto 80
 EXPOSE 80
 
 # Comando por defecto al iniciar el contenedor
-CMD bash -c "composer install && apache2-foreground"
+CMD bash -c "composer install --no-dev --no-interaction --prefer-dist && apache2-foreground"
