@@ -1,26 +1,29 @@
 # Geopagos Challenge - Tennis Tournament
 
-This is an API developed for Geopagos company.
+API desarrollada para la prueba tecnica de Geopagos.
 
-## Installation
+# Requiere
+
+Docker (latest)
+Docker Compose (latest)
+
+## Instalación
 
 ```bash
 git clone https://github.com/juanRGalarraga/geopagos-challenge
 
 cd ./geopagos-challenge
 
-composer install
+docker-compose up -d --build
 
-php artisan migrate --seed
-
-php artisan serve
-
-Go to your browser using the given url!
+docker exec geopagos_app php artisan migrate:fresh --seed
 
 ```
 
-## Documented with Swagger
+Abre en tu navegador la url http://localhost:8000 . La aplicación debería estar corriendo.
 
-When the server is runing, you can access to http://your-url/api/documentation to view and interact with de API.
+Puedes acceder a la interfaz de la documentación en http://localhost:8000/api/documentation
 
-#### Developed by Juan Galarraga @github/juanRGalarraga
+## Documentado con Swagger
+
+#### Desarrollado por Juan Galarraga @github/juanRGalarraga

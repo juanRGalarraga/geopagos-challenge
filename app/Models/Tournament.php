@@ -8,11 +8,13 @@ use App\Models\Game;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Exceptions\InvalidPlayerException;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Tournament extends Model
 {
+
+    use HasFactory;
 
     protected $fillable = ['name', 'type', 'winner', 'start_date'];
 
