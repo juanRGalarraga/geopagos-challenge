@@ -18,6 +18,8 @@ docker-compose up -d --build
 
 docker exec geopagos_app php artisan migrate:fresh --seed
 
+docker exec geopagos_app composer install
+
 ```
 
 Abre en tu navegador la url http://localhost:8000 . La aplicación debería estar corriendo.

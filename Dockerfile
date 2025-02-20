@@ -37,7 +37,8 @@ RUN a2enmod rewrite \
 COPY . .
 
 RUN cp .env.example .env
-RUN composer install
+
+RUN composer install --no-dev --no-interaction --prefer-dist
 
 RUN php artisan key:generate
 
@@ -45,4 +46,4 @@ RUN php artisan key:generate
 EXPOSE 80
 
 # Comando por defecto al iniciar el contenedor
-CMD ["apache2-foreground"]
+CMD bash -c "composer install && apache2-foreground"
