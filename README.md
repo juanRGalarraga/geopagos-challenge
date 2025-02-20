@@ -11,6 +11,8 @@ cd ./geopagos-challenge
 
 composer install
 
+php artisan migrate --seed
+
 php artisan serve
 
 Go to your browser using the given url!
