@@ -33,7 +33,7 @@ class Player extends Model
 
     public function getScoreForMale() : float{
         //Lucky points works like a dice roll,
-        //it can be any float between 1 and 20
+        //it can be any float between 1 and 50
         $skillLevel = 0.5 * $this->skill_level * $this->getLuckyPoints();
         $speed = 0.3 * $this->speed * $this->getLuckyPoints();
         $strong = 0.2 * $this->strong * $this->getLuckyPoints();
