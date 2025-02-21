@@ -12,7 +12,6 @@ use App\Http\Requests\TournamentSimulateRequest;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
 
 class TournamentController extends Controller
 {
